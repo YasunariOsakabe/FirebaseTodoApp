@@ -25,6 +25,7 @@ class ViewController: UIViewController {
         
     }
     
+    
     @IBAction func tapRegisterButton(_ sender: Any) {
         if let email = registerEmailTextField.text,
            let password = registerPasswordTextField.text,
@@ -61,6 +62,28 @@ class ViewController: UIViewController {
             })
         }
     }
+    
+    @IBAction func tapLoginButton(_ sender: Any) {
+            if let email = loginEmailTextField.text,
+                let password = loginPasswordTextField.text {
+                // ①FirebaseAuthにemailとpasswordでログインを行う
+                Auth.auth().signIn(withEmail: email, password: password, completion: { (result, error) in
+                    if let user = result?.user {
+                        print("ログイン完了 uid:" + user.uid)
+                        // ②成功した場合はTodo一覧画面に画面遷移を行う
+                        let storyboard: UIStoryboard = self.storyboard!
+                        let next = storyboard.instantiateViewController(withIdentifier: "TodoListViewController")
+                        self.present(next, animated: true, completion: nil)
+                    } else if let error = error {
+                        // ①が失敗した場合
+                        print("ログイン失敗 " + error.localizedDescription)
+                        let dialog = UIAlertController(title: "ログイン失敗", message: error.localizedDescription, preferredStyle: .alert)
+                        dialog.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(dialog, animated: true, completion: nil)
+                    }
+                })
+            }
+        }
 }
                                    
 
