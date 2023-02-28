@@ -44,6 +44,26 @@ class TodoListViewController: UIViewController {
     }
     
     @IBAction func tapLogoutButton(_ sender: Any) {
+        // ①ログイン済みかどうかを確認
+        if Auth.auth().currentUser != nil {
+            // ②ログアウトの処理
+            do {
+                try Auth.auth().signOut()
+                print("ログアウト完了")
+                // ③成功した場合はログイン画面へ遷移
+                let storyboard: UIStoryboard = self.storyboard!
+                let next = storyboard.instantiateViewController(withIdentifier: "ViewController")
+                next.modalPresentationStyle = .fullScreen
+                self.present(next, animated: true, completion: nil)
+            } catch let error as NSError {
+                print("ログアウト失敗: " + error.localizedDescription)
+                // ②が失敗した場合
+                let dialog = UIAlertController(title: "ログアウト失敗", message: error.localizedDescription, preferredStyle: .alert)
+                dialog.addAction(UIAlertAction(title: "OK", style: .default))
+                dialog.modalPresentationStyle = .fullScreen
+                self.present(dialog, animated: true, completion: nil)
+            }
+        }
         
     }
     
