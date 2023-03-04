@@ -39,8 +39,15 @@ class TodoListViewController: UIViewController {
         }
     }
     
+    
+    
+    //＋ボタンタップ時の処理(TodoAddViewControllerに遷移)
     @IBAction func tapAddButton(_ sender: Any) {
-        
+        // ①Todo作成画面に画面遷移
+        let storyboard: UIStoryboard = self.storyboard!
+        let next = storyboard.instantiateViewController(withIdentifier: "TodoAddViewController")
+        next.modalPresentationStyle = .fullScreen
+        self.present(next, animated: true, completion: nil)
     }
     
     @IBAction func tapLogoutButton(_ sender: Any) {
