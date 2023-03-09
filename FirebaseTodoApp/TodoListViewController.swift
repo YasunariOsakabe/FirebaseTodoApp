@@ -125,7 +125,20 @@ class TodoListViewController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     @IBAction func changeDoneControl(_ sender: UISegmentedControl) {
-
+        switch sender.selectedSegmentIndex {
+        case 0:
+            // 未完了、完了を切り替える
+            isDone = false
+            // firestoreからデータを取得
+            getTodoDataForFirestore()
+        case 1:
+            isDone = true
+            getTodoDataForFirestore()
+        // ないとエラーになるので定義している
+        default:
+            isDone = false
+            getTodoDataForFirestore()
+        }
     }
 
     // FirestoreからTodoを取得する処理
@@ -133,7 +146,29 @@ class TodoListViewController: UIViewController,UITableViewDelegate,UITableViewDa
         if let user = Auth.auth().currentUser {
             Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").getDocuments(completion: { (querySnapshot, error) in
                 if let querySnapshot = querySnapshot {
-                  
+                    var idArray:[String] = []
+                    var titleArray:[String] = []
+                    var detailArray:[String] = []
+                    var isDoneArray:[Bool] = []
+                    for doc in querySnapshot.documents {
+                        let data = doc.data()
+                        idArray.append(doc.documentID)
+                        titleArray.append(data["title"] as! String)
+                        detailArray.append(data["detail"] as! String)
+                        isDoneArray.append(data["isDone"] as! Bool)
+                    }
+                    self.todoIdArray = idArray
+                    self.todoTitleArray = titleArray
+                    self.todoDetailArray = detailArray
+                    self.todoIsDoneArray = isDoneArray
+                    print(self.todoTitleArray)
+                    self.tableView.reloadData()
+                    
+                } else if let error = error {
+                    print("TODO取得失敗: " + error.localizedDescription)
+                }
+            })
+        }
     }
     
     
