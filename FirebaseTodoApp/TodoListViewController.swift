@@ -125,7 +125,20 @@ class TodoListViewController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     
     @IBAction func changeDoneControl(_ sender: UISegmentedControl) {
-
+        switch sender.selectedSegmentIndex {
+        case 0:
+            // 未完了、完了を切り替える
+            isDone = false
+            // firestoreからデータを取得
+            getTodoDataForFirestore()
+        case 1:
+            isDone = true
+            getTodoDataForFirestore()
+        // ないとエラーになるので定義している
+        default:
+            isDone = false
+            getTodoDataForFirestore()
+        }
     }
 
     // FirestoreからTodoを取得する処理
