@@ -92,9 +92,22 @@ class TodoEditViewController: UIViewController {
             })
         }
     }
-    
+    //削除ボタンの実装
     @IBAction func tapDeleteButton(_ sender: Any) {
-        
+        if let user = Auth.auth().currentUser {
+            Firestore.firestore().collection("users/\(user.uid)/todos").document(todoId).delete(){ error in
+                if let error = error {
+                    print("TODO削除失敗: " + error.localizedDescription)
+                    let dialog = UIAlertController(title: "TODO削除失敗", message: error.localizedDescription, preferredStyle: .alert)
+                    dialog.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(dialog, animated: true, completion: nil)
+                } else {
+                    print("TODO削除成功")
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+    }
     }
 }
 
