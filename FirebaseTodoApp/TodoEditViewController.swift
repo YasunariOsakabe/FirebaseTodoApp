@@ -71,8 +71,26 @@ class TodoEditViewController: UIViewController {
         }
         
     }
+    //完了、未完了切り替えボタンの実装
     @IBAction func tapDoneButton(_ sender: Any) {
-        
+        if let user = Auth.auth().currentUser {
+            Firestore.firestore().collection("users/\(user.uid)/todos").document(todoId).updateData(
+                [
+                    "isDone": !todoIsDone,
+            "updatedAt": FieldValue.serverTimestamp()
+                ]
+                ,completion: { error in
+                    if let error = error {
+                        print("TODO更新失敗: " + error.localizedDescription)
+                        let dialog = UIAlertController(title: "TODO更新失敗", message: error.localizedDescription, preferredStyle: .alert)
+                        dialog.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(dialog, animated: true, completion: nil)
+                    } else {
+                        print("TODO更新成功")
+                        self.dismiss(animated: true, completion: nil)
+                    }
+            })
+        }
     }
     
     @IBAction func tapDeleteButton(_ sender: Any) {
