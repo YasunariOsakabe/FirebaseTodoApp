@@ -129,7 +129,7 @@
         <!--Todo Add View Controller-->
         <scene sceneID="Ykh-mL-5bq">
             <objects>
-                <viewController storyboardIdentifier="TodoAddViewController" id="MnD-Cy-GL4" customClass="TodoAddViewController" customModule="FirebaseTodoApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TodoAddViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MnD-Cy-GL4" customClass="TodoAddViewController" customModule="FirebaseTodoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="b6y-IF-bUM">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -355,7 +355,7 @@
         <!--Todo List View Controller-->
         <scene sceneID="hNo-6H-5b5">
             <objects>
-                <viewController storyboardIdentifier="TodoListViewController" id="Z2u-Wc-2LP" customClass="TodoListViewController" customModule="FirebaseTodoApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TodoListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Z2u-Wc-2LP" customClass="TodoListViewController" customModule="FirebaseTodoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="22i-bQ-qbJ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -378,7 +378,7 @@
                                 <rect key="frame" x="0.0" y="103.66666666666669" width="393" height="609.33333333333326"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="38" id="9HQ-bC-DDa">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="38" id="9HQ-bC-DDa">
                                         <rect key="frame" x="0.0" y="50" width="393" height="38"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9HQ-bC-DDa" id="1Cx-PB-z3M">
