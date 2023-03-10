@@ -61,6 +61,10 @@ class TodoListViewController: UIViewController,UITableViewDelegate,UITableViewDa
             //  Firestoreからデータを取得する方法として、getDocument()
             //  複数のデータを取得する場合は、getDocuments()とaddSnapshotListener() → getDocumentの複数番
             
+            //addSnapshotListenerがFirestore特有で、Firestoreの更新を検知して複数取得の処理が走る。
+            
+
+            
             Firestore.firestore().collection("users/\(user.uid)/todos").whereField("isDone", isEqualTo: isDone).order(by: "createdAt").addSnapshotListener({ (querySnapshot, error) in
                 if let querySnapshot = querySnapshot {
                     // ③Firestoreから取得したデータを入れる配列を用意してfor文で追加する
@@ -96,7 +100,6 @@ class TodoListViewController: UIViewController,UITableViewDelegate,UITableViewDa
         // ①Todo作成画面に画面遷移
         let storyboard: UIStoryboard = self.storyboard!
         let next = storyboard.instantiateViewController(withIdentifier: "TodoAddViewController")
-        next.modalPresentationStyle = .fullScreen
         self.present(next, animated: true, completion: nil)
     }
     
@@ -180,6 +183,18 @@ class TodoListViewController: UIViewController,UITableViewDelegate,UITableViewDa
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.textLabel?.text = todoTitleArray[indexPath.row]
         return cell
+    }
+    
+    //cellがタップされた時に呼ばれるメソッド
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let storyboard: UIStoryboard = self.storyboard!
+        let next = storyboard.instantiateViewController(withIdentifier: "TodoEditViewController") as! TodoEditViewController
+        next.todoId = todoIdArray[indexPath.row]
+        next.todoTitle = todoTitleArray[indexPath.row]
+        next.todoDetail = todoDetailArray[indexPath.row]
+        next.todoIsDone = todoIsDoneArray[indexPath.row]
+        self.present(next, animated: true, completion: nil)
     }
     
 }
