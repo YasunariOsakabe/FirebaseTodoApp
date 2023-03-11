@@ -231,5 +231,35 @@ class TodoListViewController: UIViewController,UITableViewDelegate,UITableViewDa
         default:
             editAction.image = UIImage(systemName: "checkmark")
         }
+        
+        
+        // 削除のスワイプ
+        let deleteAction = UIContextualAction(style: .normal,
+                                              title: "Delete",
+                                              handler: { (action: UIContextualAction, view: UIView, completion: (Bool) -> Void) in
+            if let user = Auth.auth().currentUser {
+                Firestore.firestore().collection("users/\(user.uid)/todos").document(self.todoIdArray[indexPath.row]).delete(){ error in
+                    if let error = error {
+                        print("TODO削除失敗: " + error.localizedDescription)
+                        let dialog = UIAlertController(title: "TODO削除失敗", message: error.localizedDescription, preferredStyle: .alert)
+                        dialog.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(dialog, animated: true, completion: nil)
+                    } else {
+                        print("TODO削除成功")
+                        self.getTodoDataForFirestore()
+                    }
+                }
+            }
+        })
+        deleteAction.backgroundColor = UIColor(red: 214/255.0, green: 69/255.0, blue: 65/255.0, alpha: 1)
+        deleteAction.image = UIImage(systemName: "clear")
+        
+        // スワイプアクションを追加
+        let swipeActionConfig = UISwipeActionsConfiguration(actions: [editAction, deleteAction])
+        // fullスワイプ時に挙動が起きないように制御
+        swipeActionConfig.performsFirstActionWithFullSwipe = false
+        
+        return swipeActionConfig
+    }
     
 }
